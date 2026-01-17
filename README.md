@@ -1,2 +1,2 @@
 # dotfiles
-Here you can find my config files
+Here are my config files for a keyboard-driven workflow​ on macOS.
