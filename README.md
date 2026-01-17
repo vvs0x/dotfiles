@@ -1,4 +1,4 @@
 # dotfiles
-- [[.aerospace.toml]]
-- sketchybar
-- ghostyy
+- aerospace
+- sketchybar (in process)
+- ghostyy (in process)
