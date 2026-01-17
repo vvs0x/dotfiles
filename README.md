@@ -1,9 +1,8 @@
 # Dotfiles
 
+I use Karabiner to make my Caps Lock key act as `"control+option+command"`. This gives me a clean keyboard layer in Aerospace​ to set up shortcuts, so I never interfere with any native macOS ones.
 
-I use karabiner to set my capslock key to `control+option+command`. This enables me to set basically any key combination in aerospace without interfering with any macOS key combination.
+- aerospace (a tiling window manager)
+- karabiner (a heavy-duty keyboard customizer)
 
-- aerospace
-- karabiner
-- sketchybar (in process)
-- ghostyy (in process)
+
