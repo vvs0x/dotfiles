@@ -1,5 +1,4 @@
 start-at-login = true
-
 #after-startup-command = ['exec-and-forget sketchybar']
 
 # Run Sketchybar together with AeroSpace
@@ -12,17 +11,11 @@ start-at-login = true
 #]
 
 enable-normalization-flatten-containers = true
-
 enable-normalization-opposite-orientation-for-nested-containers = true
-
 accordion-padding = 25
-
 default-root-container-layout = 'tiles'
-
 default-root-container-orientation = 'auto'
-
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-
 automatically-unhide-macos-hidden-apps = false
 
 [key-mapping]
@@ -35,14 +28,12 @@ automatically-unhide-macos-hidden-apps = false
     outer.bottom =     6
     outer.top = [
     { monitor."Built-in Retina Display" = 6 },
-    { monitor."LG ULTRAGEAR" = 6},
+    { monitor."LG ULTRAGEAR" = 6 },
     6
     ]
     outer.right =      6
 
-
 [mode.main.binding]
-
     # start applications
     cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.googlecode.iterm2'
     cmd-ctrl-alt-shift-o = 'exec-and-forget open -b md.obsidian --args -v "/Users/mg/Data Science"'
@@ -86,11 +77,11 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-g = 'workspace g'
 
     # move nodes
-    cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a && sketchybar --trigger space_windows_change'
-    cmd-ctrl-alt-shift-s = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window s && sketchybar --trigger space_windows_change'
-    cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d && sketchybar --trigger space_windows_change'
-    cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f && sketchybar --trigger space_windows_change'
-    cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g && sketchybar --trigger space_windows_change'
+    cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a' # && sketchybar --trigger space_windows_change'
+    cmd-ctrl-alt-shift-s = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window s' # && sketchybar --trigger space_windows_change'
+    cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d' # && sketchybar --trigger space_windows_change'
+    cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f' # && sketchybar --trigger space_windows_change'
+    cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g' # && sketchybar --trigger space_windows_change'
 
     # mack and forth
     cmd-ctrl-alt-tab = 'workspace-back-and-forth'    
@@ -104,55 +95,53 @@ automatically-unhide-macos-hidden-apps = false
     # service mode
     cmd-ctrl-alt-shift-m = ['mode service']
 
-
-    [mode.service.binding]
-
+[mode.service.binding]
     r = ['reload-config', 'mode main']
     f = ['flatten-workspace-tree', 'mode main']
     t = ['layout floating tiling', 'mode main']
     
-    # floating default
-    [[on-window-detected]]
-    if.app-id = 'com.apple.finder'
-    run = ['layout floating']
+# floating default
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['layout floating']
 
-    [[on-window-detected]]
-    if.app-id = 'com.apple.systempreferences'
-    run = ['layout floating']
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = ['layout floating']
 
-    [[on-window-detected]]
-    if.app-id = 'com.apple.facetime'
-    run = ['layout floating']
+[[on-window-detected]]
+if.app-id = 'com.apple.facetime'
+run = ['layout floating']
 
-    [[on-window-detected]]
-    if.app-id = 'com.googlecode.iterm2'
-    run = ['layout floating']
+[[on-window-detected]]
+if.app-id = 'com.googlecode.iterm2'
+run = ['layout floating']
 
-    [[on-window-detected]]
-    if.app-id = 'com.apple.ActivityMonitor'
-    run = ['layout floating']
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = ['layout floating']
 
-    [[on-window-detected]]
-    if.app-id = 'com.preply'
-    run = ['layout floating']
+[[on-window-detected]]
+if.app-id = 'com.preply'
+run = ['layout floating']
 
-    # auto move to workspace
-    [[on-window-detected]]
-    if.app-id = 'md.obsidian'
-    run = ['move-node-to-workspace a']
+# auto move to workspace
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['move-node-to-workspace a']
 
-    [[on-window-detected]]
-    if.app-id = 'com.microsoft.VSCode'
-    run = ['move-node-to-workspace d']
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = ['move-node-to-workspace d']
 
-    [[on-window-detected]]
-    if.app-id = 'com.rstudio.desktop'
-    run = ['move-node-to-workspace d']
+[[on-window-detected]]
+if.app-id = 'com.rstudio.desktop'
+run = ['move-node-to-workspace d']
 
-    [[on-window-detected]]
-    if.app-id = 'com.tencent.xinWeChat'
-    run = ['move-node-to-workspace g']
+[[on-window-detected]]
+if.app-id = 'com.tencent.xinWeChat'
+run = ['move-node-to-workspace g']
 
-    [[on-window-detected]]
-    if.app-id = 'net.whatsapp.WhatsApp'
-    run = ['move-node-to-workspace g']
+[[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
+run = ['move-node-to-workspace g']
