@@ -1,4 +1,5 @@
 start-at-login = true
+
 #after-startup-command = ['exec-and-forget sketchybar']
 
 # Run Sketchybar together with AeroSpace
@@ -35,7 +36,7 @@ automatically-unhide-macos-hidden-apps = false
 
 [mode.main.binding]
     # start applications
-    cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.googlecode.iterm2'
+    cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.mitchellh.ghostty'
     cmd-ctrl-alt-shift-o = 'exec-and-forget open -b md.obsidian --args -v "/Users/mg/Data Science"'
     cmd-ctrl-alt-w = 'exec-and-forget osascript -e "tell application \"Finder\" to make new Finder window to (POSIX file \"/Users/mg\")" -e "tell application \"Finder\" to activate"'
     cmd-ctrl-alt-shift-w = 'exec-and-forget open -b com.tencent.xinWeChat'
@@ -113,9 +114,9 @@ run = ['layout floating']
 if.app-id = 'com.apple.facetime'
 run = ['layout floating']
 
-[[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
-run = ['layout floating']
+#[[on-window-detected]]
+#if.app-id = 'com.mitchellh.ghostty'
+#run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
