@@ -25,12 +25,13 @@ automatically-unhide-macos-hidden-apps = false
 [mode.main.binding]
     # start applications
     cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.mitchellh.ghostty'
-    cmd-ctrl-alt-shift-o = 'exec-and-forget open -b md.obsidian --args -v "/Users/mg/Data Science"'
+    cmd-ctrl-alt-shift-o = 'exec-and-forget open -b md.obsidian --args -v "/Users/mg/DATA_SCIENCE"'
     cmd-ctrl-alt-w = 'exec-and-forget osascript -e "tell application \"Finder\" to make new Finder window to (POSIX file \"/Users/mg\")" -e "tell application \"Finder\" to activate"'
     cmd-ctrl-alt-shift-w = 'exec-and-forget open -b com.tencent.xinWeChat'
     cmd-ctrl-alt-v = 'exec-and-forget open -b com.microsoft.VSCode'
     cmd-ctrl-alt-r = 'exec-and-forget open -b com.rstudio.desktop'
     cmd-ctrl-alt-x = 'exec-and-forget open -b com.tencent.yuanbao'
+    cmd-ctrl-alt-c = 'exec-and-forget open -b com.anthropic.claudefordesktop'
 
     # layout
     cmd-ctrl-alt-o = 'layout tiles horizontal vertical'
@@ -64,6 +65,7 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-d = 'workspace d'
     cmd-ctrl-alt-f = 'workspace f'
     cmd-ctrl-alt-g = 'workspace g'
+    cmd-ctrl-alt-t = 'workspace t'
 
     # move nodes
     cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a' 
@@ -71,6 +73,7 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d'
     cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f'
     cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g' 
+    cmd-ctrl-alt-shift-t = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window t'
 
     # mack and forth
     cmd-ctrl-alt-tab = 'workspace-back-and-forth'    
@@ -84,6 +87,11 @@ automatically-unhide-macos-hidden-apps = false
     # service mode
     cmd-ctrl-alt-shift-m = ['mode service']
 
+[workspace-to-monitor-force-assignment]
+    g = 'LG ULTRAGEAR'
+    t = 'LG ULTRAGEAR'
+
+    
 [mode.service.binding]
     r = ['reload-config', 'mode main']
     f = ['flatten-workspace-tree', 'mode main']
@@ -98,9 +106,9 @@ run = ['layout floating']
 if.app-id = 'com.apple.systempreferences'
 run = ['layout floating']
 
-[[on-window-detected]]
-if.app-id = 'com.apple.facetime'
-run = ['layout floating']
+#[[on-window-detected]]
+#if.app-id = 'com.apple.facetime'
+#run = ['layout floating']
 
 #[[on-window-detected]]
 #if.app-id = 'com.mitchellh.ghostty'
