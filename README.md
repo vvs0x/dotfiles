@@ -1,4 +1,5 @@
-# Dotfiles
+
+src="https://github.com/user-attachments/assets/305954de-a835-48d6-b936-efa2be73953b"
 
 My macOS configuration files, centered around a keyboard-driven workflow.
 
