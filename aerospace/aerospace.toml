@@ -1,0 +1,144 @@
+start-at-login = true
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 25
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+automatically-unhide-macos-hidden-apps = false
+
+[key-mapping]
+    preset = 'qwerty'
+
+[gaps]
+    inner.horizontal = 6
+    inner.vertical =   6
+    outer.left =       6
+    outer.bottom =     6
+    outer.top = [
+    { monitor."Built-in Retina Display" = 6 },
+    { monitor."LG ULTRAGEAR" = 6 },
+    6
+    ]
+    outer.right =      6
+
+[mode.main.binding]
+    # start applications
+    cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.mitchellh.ghostty'
+    cmd-ctrl-alt-shift-o = 'exec-and-forget open -b md.obsidian --args -v "/Users/mg/DATA_SCIENCE"'
+    cmd-ctrl-alt-w = 'exec-and-forget osascript -e "tell application \"Finder\" to make new Finder window to (POSIX file \"/Users/mg\")" -e "tell application \"Finder\" to activate"'
+    cmd-ctrl-alt-shift-w = 'exec-and-forget open -b com.tencent.xinWeChat'
+    cmd-ctrl-alt-v = 'exec-and-forget open -b com.microsoft.VSCode'
+    cmd-ctrl-alt-r = 'exec-and-forget open -b com.rstudio.desktop'
+    cmd-ctrl-alt-x = 'exec-and-forget open -b com.tencent.yuanbao'
+    cmd-ctrl-alt-c = 'exec-and-forget open -b com.anthropic.claudefordesktop'
+    cmd-ctrl-alt-shift-q = 'exec-and-forget pkill -f WhatsApp'
+    # layout
+    cmd-ctrl-alt-o = 'layout tiles horizontal vertical'
+    cmd-ctrl-alt-p = 'layout accordion horizontal vertical'
+
+    # shift focus
+    cmd-ctrl-alt-shift-h = 'focus left'
+    cmd-ctrl-alt-shift-j = 'focus down'
+    cmd-ctrl-alt-shift-k = 'focus up'
+    cmd-ctrl-alt-shift-l = 'focus right'
+
+    # move windows
+    cmd-ctrl-alt-h = 'move left'
+    cmd-ctrl-alt-j = 'move down'
+    cmd-ctrl-alt-k = 'move up'
+    cmd-ctrl-alt-l = 'move right'
+
+    # resize window
+    cmd-ctrl-alt-shift-u = 'resize smart -50'
+    cmd-ctrl-alt-shift-i = 'resize smart +50'
+
+    # join containers
+    cmd-ctrl-alt-left = 'join-with left'
+    cmd-ctrl-alt-down = 'join-with down'
+    cmd-ctrl-alt-up = 'join-with up'
+    cmd-ctrl-alt-right = 'join-with right'
+
+    # my workspaces
+    cmd-ctrl-alt-a = 'workspace a' 
+    cmd-ctrl-alt-s = 'workspace s'
+    cmd-ctrl-alt-d = 'workspace d'
+    cmd-ctrl-alt-f = 'workspace f'
+    cmd-ctrl-alt-g = 'workspace g'
+    cmd-ctrl-alt-t = 'workspace t'
+
+    # move nodes
+    cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a' 
+    cmd-ctrl-alt-shift-s = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window s' 
+    cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d'
+    cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f'
+    cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g' 
+    cmd-ctrl-alt-shift-t = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window t'
+
+    # mack and forth
+    cmd-ctrl-alt-tab = 'workspace-back-and-forth'    
+
+    # monitor settings
+    cmd-ctrl-alt-m = 'move-workspace-to-monitor --wrap-around next'
+
+    # quit all but current
+    cmd-ctrl-alt-q = ['close-all-windows-but-current']
+
+    # service mode
+    cmd-ctrl-alt-shift-m = ['mode service']
+
+[workspace-to-monitor-force-assignment]
+    g = 'LG ULTRAGEAR'
+    t = 'LG ULTRAGEAR'
+
+    
+[mode.service.binding]
+    r = ['reload-config', 'mode main']
+    f = ['flatten-workspace-tree', 'mode main']
+    t = ['layout floating tiling', 'mode main']
+    
+# floating default
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = ['layout floating']
+
+#[[on-window-detected]]
+#if.app-id = 'com.apple.facetime'
+#run = ['layout floating']
+
+#[[on-window-detected]]
+#if.app-id = 'com.mitchellh.ghostty'
+#run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.preply'
+run = ['layout floating']
+
+# auto move to workspace
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['move-node-to-workspace a']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = ['move-node-to-workspace d']
+
+[[on-window-detected]]
+if.app-id = 'com.rstudio.desktop'
+run = ['move-node-to-workspace d']
+
+[[on-window-detected]]
+if.app-id = 'com.tencent.xinWeChat'
+run = ['move-node-to-workspace g']
+
+[[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
+run = ['move-node-to-workspace g']
