@@ -1,5 +1,9 @@
-
-src="https://github.com/user-attachments/assets/305954de-a835-48d6-b936-efa2be73953b"
+<h1>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/305954de-a835-48d6-b936-efa2be73953b" alt="Logo" width="150">
+  <br>Dotfiles
+</p>
+</h1>
 
 My macOS configuration files, centered around a keyboard-driven workflow.
 
