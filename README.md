@@ -15,18 +15,27 @@ I use **Karabiner-Elements** to remap Caps Lock to `Ctrl + Option + Cmd`. This t
 
 ### [AeroSpace](https://github.com/nikitabobko/AeroSpace) — Tiling Window Manager
 
-A keyboard-driven tiling window manager for macOS. My setup includes **6 workspaces** (`A` `S` `D` `F` `G` `T`) switched with `Hyper + key`. Windows are moved and focused using **vim-style bindings** with `HJKL`. Apps open in their designated workspace automatically (Obsidian in `A`, VS Code and RStudio in `D`, messaging in `G`). Finder, System Preferences, and Activity Monitor float by default. Workspaces `G` and `T` are assigned to an external LG ULTRAGEAR monitor.
-
-There are also quick **app launchers** built in: `Hyper + Enter` for Ghostty, `Hyper + V` for VS Code, `Hyper + C` for Claude, and a few more.
+- 6 workspaces (`A` `S` `D` `F` `G` `T`), switched with `Hyper + key`
+- Vim-style navigation with `HJKL` to focus and move windows
+- App launchers: `Hyper + Enter` for Ghostty, `Hyper + V` for VS Code, `Hyper + C` for Claude, etc.
+- Apps auto-open in their workspace (Obsidian in `A`, VS Code/RStudio in `D`, messaging in `G`)
+- Finder, System Preferences, Activity Monitor float by default
+- Workspaces `G` and `T` go to an external LG ULTRAGEAR
 
 ### [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements) — Keyboard Remapping
 
-Turns the keyboard into something that makes sense. **Caps Lock** becomes a Hyper Key (`Ctrl + Option + Cmd`), which is the foundation for all AeroSpace shortcuts. **Right Command** becomes `Fn + Ctrl`, a secondary modifier layer that gives me **vim-style arrow keys** with `HJKL` everywhere on macOS. Pressing **both Shifts** together toggles the actual Caps Lock for when you need it.
+- Caps Lock becomes `Ctrl + Option + Cmd` (the hyper key for AeroSpace)
+- Right Command becomes `Fn + Ctrl` (secondary modifier layer)
+- `Fn + Ctrl + HJKL` for arrow keys everywhere on macOS
+- `Fn + Ctrl + Enter` for quick open folder in Finder
+- Both Shifts together to toggle actual Caps Lock
 
 ### [Ghostty](https://github.com/ghostty-org/ghostty) — Terminal Emulator
 
-Running **MonoLisa Variable** at size 12 with ligatures disabled. The window sits at **75% opacity** with background blur. Underline blinking cursor, copy-on-select enabled, and the glass icon on macOS because it looks nice.
+- MonoLisa Variable, size 12, ligatures off
+- 75% opacity with background blur
+- Underline blinking cursor, copy-on-select, glass icon
 
 ### [Neovim](https://github.com/neovim/neovim) — Text Editor
 
-Minimal config. Just a `jj` to `Escape` mapping in insert mode.
+Minimal config. Just `jj` to Escape in insert mode.
