@@ -5,11 +5,7 @@
 </p>
 </h1>
 
-My macOS configuration files, centered around a keyboard-driven workflow.
-
-## The Core Idea
-
-I use **Karabiner-Elements** to remap Caps Lock to `Ctrl + Option + Cmd`. This turns Caps Lock into a dedicated modifier key that never conflicts with any native macOS shortcuts. **AeroSpace** then uses this hyper key for all its window management bindings, giving me a clean, conflict-free keyboard layer.
+My macOS dotfiles, centered around a keyboard-driven workflow. I use **Karabiner-Elements** to remap Caps Lock to `Ctrl + Option + Cmd`, turning it into a dedicated modifier key that never conflicts with native macOS shortcuts. **AeroSpace** then uses this hyper key for all its window management bindings, giving me a clean, conflict-free keyboard layer.
 
 ## What's Inside
 
