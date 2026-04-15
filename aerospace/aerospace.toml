@@ -30,9 +30,9 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-w = 'exec-and-forget open -b com.tencent.xinWeChat'
     cmd-ctrl-alt-v = 'exec-and-forget open -b com.microsoft.VSCode'
     cmd-ctrl-alt-r = 'exec-and-forget open -b com.rstudio.desktop'
-    cmd-ctrl-alt-x = 'exec-and-forget open -b com.tencent.yuanbao'
     cmd-ctrl-alt-c = 'exec-and-forget open -b com.anthropic.claudefordesktop'
-    cmd-ctrl-alt-shift-q = 'exec-and-forget pkill -f WhatsApp'
+    cmd-ctrl-alt-shift-q = 'exec-and-forget osascript -e "tell application \"WhatsApp\" to quit" -e "do shell script \"killall WeChat\""'
+
     # layout
     cmd-ctrl-alt-o = 'layout tiles horizontal vertical'
     cmd-ctrl-alt-p = 'layout accordion horizontal vertical'
@@ -65,7 +65,6 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-d = 'workspace d'
     cmd-ctrl-alt-f = 'workspace f'
     cmd-ctrl-alt-g = 'workspace g'
-    cmd-ctrl-alt-t = 'workspace t'
 
     # move nodes
     cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a' 
@@ -73,9 +72,8 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d'
     cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f'
     cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g' 
-    cmd-ctrl-alt-shift-t = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window t'
 
-    # mack and forth
+    # back and forth
     cmd-ctrl-alt-tab = 'workspace-back-and-forth'    
 
     # monitor settings
@@ -88,8 +86,8 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-m = ['mode service']
 
 [workspace-to-monitor-force-assignment]
+    f = 'LG ULTRAGEAR'
     g = 'LG ULTRAGEAR'
-    t = 'LG ULTRAGEAR'
 
     
 [mode.service.binding]
