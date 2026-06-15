@@ -10,17 +10,14 @@ automatically-unhide-macos-hidden-apps = false
 [key-mapping]
     preset = 'qwerty'
 
+
 [gaps]
     inner.horizontal = 6
     inner.vertical =   6
-    outer.left =       6
-    outer.bottom =     6
-    outer.top = [
-    { monitor."Built-in Retina Display" = 6 },
-    { monitor."LG ULTRAGEAR" = 6 },
-    6
-    ]
-    outer.right =      6
+    outer.left = [{ monitor."EV3895" = 10 }, 6]
+    outer.bottom = [{ monitor."EV3895" = 10 }, 6]
+    outer.top = [{ monitor."EV3895" = 3 }, 6]
+    outer.right = [{ monitor."EV3895" = 10 }, 6]
 
 [mode.main.binding]
     # start applications
@@ -65,6 +62,7 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-d = 'workspace d'
     cmd-ctrl-alt-f = 'workspace f'
     cmd-ctrl-alt-g = 'workspace g'
+    cmd-ctrl-alt-t = 'workspace t'
 
     # move nodes
     cmd-ctrl-alt-shift-a = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window a' 
@@ -72,6 +70,8 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-d = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window d'
     cmd-ctrl-alt-shift-f = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window f'
     cmd-ctrl-alt-shift-g = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window g' 
+    cmd-ctrl-alt-shift-t = 'exec-and-forget aerospace move-node-to-workspace --focus-follows-window t' 
+
 
     # back and forth
     cmd-ctrl-alt-tab = 'workspace-back-and-forth'    
@@ -86,9 +86,9 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-shift-m = ['mode service']
 
 [workspace-to-monitor-force-assignment]
-    f = 'LG ULTRAGEAR'
-    g = 'LG ULTRAGEAR'
-
+    f = ['EV3895', 'LG ULTRAGEAR', 'Sidecar']
+    g = ['EV3895', 'LG ULTRAGEAR', 'Sidecar']
+    t = ['EV3895', 'LG ULTRAGEAR', 'Sidecar'] 
     
 [mode.service.binding]
     r = ['reload-config', 'mode main']
@@ -104,14 +104,6 @@ run = ['layout floating']
 if.app-id = 'com.apple.systempreferences'
 run = ['layout floating']
 
-#[[on-window-detected]]
-#if.app-id = 'com.apple.facetime'
-#run = ['layout floating']
-
-#[[on-window-detected]]
-#if.app-id = 'com.mitchellh.ghostty'
-#run = ['layout floating']
-
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
 run = ['layout floating']
@@ -119,6 +111,18 @@ run = ['layout floating']
 [[on-window-detected]]
 if.app-id = 'com.preply'
 run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'party.mihomo.app'
+run = ['layout floating']
+
+#[[on-window-detected]]
+#if.app-id = 'com.apple.facetime'
+#run = ['layout floating']
+
+#[[on-window-detected]]
+#if.app-id = 'com.mitchellh.ghostty'
+#run = ['layout floating']
 
 # auto move to workspace
 [[on-window-detected]]
@@ -140,3 +144,11 @@ run = ['move-node-to-workspace g']
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
 run = ['move-node-to-workspace g']
+
+[[on-window-detected]]
+if.app-id = 'com.citrix.receiver.icaviewer.mac'
+run = ['move-node-to-workspace t']
+
+[[on-window-detected]]
+if.app-id = 'com.citrix.receiver.nomas'
+run = ['move-node-to-workspace t']
