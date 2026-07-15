@@ -1,0 +1,5 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR cyan:\x2d\x2dtheme\x3ddefault\x1eblue
+SETUVAR fish_color_param:yellow
+SETUVAR fish_color_valid_path:blue
