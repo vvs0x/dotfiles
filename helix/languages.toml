@@ -1,0 +1,48 @@
+# ~/.config/helix/languages.toml
+# Only overrides live here — marksman, taplo, texlab, rust-analyzer
+# are picked up automatically once they're on PATH.
+
+# ── Python: basedpyright (types/completion) + ruff (lint/format) ──
+[language-server.basedpyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[[language]]
+name = "python"
+language-servers = ["basedpyright", "ruff"]
+auto-format = true
+
+# ── Rust: run clippy instead of check on save ─────────────────────
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+# ── Fish scripts ──────────────────────────────────────────────────
+[language-server.fish-lsp]
+command = "fish-lsp"
+args = ["start"]
+
+[[language]]
+name = "fish"
+language-servers = ["fish-lsp"]
+
+# ── Markdown: wrap instead of sideways scrolling ──────────────────
+[[language]]
+name = "markdown"
+soft-wrap.enable = true
+
+# ── LaTeX: texlab shells out to latexmk (your MacTeX) on save ─────
+[language-server.texlab.config.texlab.build]
+onSave = true
+
+[[language]]
+name = "latex"
+soft-wrap.enable = true
+
+# ── TOML: format on save (Cargo.toml, these configs, ...) ─────────
+[[language]]
+name = "toml"
+auto-format = true

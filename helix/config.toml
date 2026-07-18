@@ -1,0 +1,56 @@
+# ~/.config/helix/config.toml
+theme = "catppuccin_frappe"
+
+[editor]
+line-number = "relative"
+cursorline = true
+bufferline = "multiple"
+color-modes = true
+true-color = true
+undercurl = true
+rulers = [100]
+end-of-line-diagnostics = "hint"
+clipboard-provider = "x-clip"
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.indent-guides]
+render = true
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+
+[editor.statusline]
+left = [
+  "mode",
+  "spinner",
+  "file-name",
+  "read-only-indicator",
+  "file-modification-indicator",
+]
+right = [
+  "diagnostics",
+  "version-control",
+  "selections",
+  "position",
+  "file-encoding",
+]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
+
+[keys.insert]
+j = { j = "normal_mode" }

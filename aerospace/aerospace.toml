@@ -1,3 +1,4 @@
+config-version = 2
 start-at-login = true
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
@@ -29,6 +30,7 @@ automatically-unhide-macos-hidden-apps = false
     cmd-ctrl-alt-r = 'exec-and-forget open -b com.rstudio.desktop'
     cmd-ctrl-alt-c = 'exec-and-forget open -b com.anthropic.claudefordesktop'
     cmd-ctrl-alt-shift-q = 'exec-and-forget osascript -e "tell application \"WhatsApp\" to quit" -e "do shell script \"killall WeChat\""'
+    cmd-ctrl-alt-e = 'exec-and-forget open -b dev.zed.Zed'
 
     # layout
     cmd-ctrl-alt-o = 'layout tiles horizontal vertical'
@@ -116,6 +118,10 @@ run = ['layout floating']
 if.app-id = 'party.mihomo.app'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'com.cyberghostsrl.cyberghostmac'
+run = ['layout floating']
+
 #[[on-window-detected]]
 #if.app-id = 'com.apple.facetime'
 #run = ['layout floating']
@@ -134,6 +140,10 @@ if.app-id = 'com.microsoft.VSCode'
 run = ['move-node-to-workspace d']
 
 [[on-window-detected]]
+if.app-id = 'dev.zed.Zed'
+run = ['move-node-to-workspace d']
+
+[[on-window-detected]]
 if.app-id = 'com.rstudio.desktop'
 run = ['move-node-to-workspace d']
 
@@ -144,10 +154,6 @@ run = ['move-node-to-workspace g']
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
 run = ['move-node-to-workspace g']
-
-[[on-window-detected]]
-if.app-id = 'com.citrix.receiver.icaviewer.mac'
-run = ['move-node-to-workspace t']
 
 [[on-window-detected]]
 if.app-id = 'com.citrix.receiver.nomas'
