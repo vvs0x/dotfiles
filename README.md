@@ -32,6 +32,6 @@ MacOS dotfiles built around a keyboard-driven workflow. Caps Lock is remapped to
 - 75% opacity with background blur
 - Underline blinking cursor, copy-on-select, glass icon
 
-### [Neovim](https://github.com/neovim/neovim) — Text Editor
+### [Helix](https://github.com/helix-editor/helix) — Text Editor
 
 Minimal config. Just `jj` to Escape in insert mode.
