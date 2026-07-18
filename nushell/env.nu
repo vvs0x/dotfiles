@@ -1,0 +1,1 @@
+/Users/mg/Library/Application Support/nushell/env.nu

@@ -12,26 +12,36 @@ MacOS dotfiles built around a keyboard-driven workflow. Caps Lock is remapped to
 ### [AeroSpace](https://github.com/nikitabobko/AeroSpace) — Tiling Window Manager
 
 - 6 workspaces (`A` `S` `D` `F` `G` `T`), switched with `Hyper + key`
-- Vim-style navigation with `HJKL` to focus and move windows
-- App launchers: `Hyper + Enter` for Ghostty, `Hyper + V` for VS Code, `Hyper + C` for Claude, etc.
-- Apps auto-open in their workspace (Obsidian in `A`, VS Code/RStudio in `D`, messaging in `G`)
-- Finder, System Preferences, Activity Monitor float by default
-- Workspaces `G` and `T` go to an external LG ULTRAGEAR
+- Vim-style `HJKL` to move windows, `Hyper + Shift + HJKL` to shift focus
+- App launchers: `Hyper + Enter` Ghostty · `Hyper + V` VS Code · `Hyper + E` Zed · `Hyper + C` Claude · `Hyper + R` RStudio · `Hyper + Shift + O` Obsidian
+- Apps auto-open in their workspace (Obsidian in `A`, editors/RStudio in `D`, messaging in `G`)
+- Finder, System Settings, Activity Monitor and VPN clients float by default
+- Workspaces `F` `G` `T` are pinned to the external monitor (EV3895), falling back to the LG UltraGear
+- Service mode (`Hyper + Shift + M`) to reload config, flatten the tree, or toggle floating
 
 ### [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements) — Keyboard Remapping
 
-- Caps Lock becomes `Ctrl + Option + Cmd` (the hyper key for AeroSpace)
-- Right Command becomes `Fn + Ctrl` (secondary modifier layer)
+- Caps Lock becomes `Ctrl + Option + Cmd` (the Hyper key that drives AeroSpace)
+- Right Command becomes `Fn + Ctrl` (a secondary modifier layer)
 - `Fn + Ctrl + HJKL` for arrow keys everywhere on macOS
-- `Fn + Ctrl + Enter` for quick open folder in Finder
-- Both Shifts together to toggle actual Caps Lock
+- `Fn + Ctrl + Enter` opens the current folder in Finder
+- Both Shifts together toggle real Caps Lock
 
 ### [Ghostty](https://github.com/ghostty-org/ghostty) — Terminal Emulator
 
-- MonoLisa Variable, size 12, ligatures off
-- 75% opacity with background blur
-- Underline blinking cursor, copy-on-select, glass icon
+- Zed Mono Bold, size 15
+- Catppuccin Frappé palette
+- 8px window padding, minimal title bar
+- Launches Nushell as the default shell
+
+### [Nushell](https://www.nushell.sh) — Shell
+
+- Structured-data shell that replaced zsh and fish
+- Wired in as Ghostty's default command
 
 ### [Helix](https://github.com/helix-editor/helix) — Text Editor
 
-Minimal config. Just `jj` to Escape in insert mode.
+- Catppuccin Frappé theme, relative line numbers, 100-column ruler
+- LSPs wired up: basedpyright + ruff (Python), rust-analyzer with clippy, texlab (LaTeX), marksman (Markdown)
+- `jj` to Escape in insert mode, `Esc` collapses the selection
+
