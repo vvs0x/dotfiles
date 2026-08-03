@@ -18,12 +18,14 @@ palette = 14=#81c8be
 palette = 15=#b5bfe2
 background = 303446
 foreground = c6d0f5
+cursor-style = block_hollow
 cursor-color = f2d5cf
 cursor-text = 232634
 selection-background = 44495d
 selection-foreground = c6d0f5
 split-divider-color = 414559
 title = " "
-window-padding-x = 8
-window-padding-y = 8
+window-padding-x = 10
+window-padding-y = 10
 command = /opt/homebrew/bin/nu
+shell-integration = none
