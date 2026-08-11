@@ -20,15 +20,6 @@ auto-format = true
 [language-server.rust-analyzer.config.check]
 command = "clippy"
 
-# ── Fish scripts ──────────────────────────────────────────────────
-[language-server.fish-lsp]
-command = "fish-lsp"
-args = ["start"]
-
-[[language]]
-name = "fish"
-language-servers = ["fish-lsp"]
-
 # ── Markdown: wrap instead of sideways scrolling ──────────────────
 [[language]]
 name = "markdown"
