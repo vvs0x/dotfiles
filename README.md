@@ -1,8 +1,5 @@
-<h1>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/305954de-a835-48d6-b936-efa2be73953b" alt="Logo" width="150">
-  <br>Dotfiles
-</p>
+<h1 align="center">
+  Dotfiles
 </h1>
 
 MacOS dotfiles built around a keyboard-driven workflow. Caps Lock is remapped to `ctrl + option + cmd` via Karabiner-Elements, creating a dedicated modifier key that never conflicts with native macOS shortcuts. AeroSpace picks up this hyper key for all window management bindings, keeping everything on a clean, conflict-free keyboard layer.
