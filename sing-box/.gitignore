@@ -1,0 +1,21 @@
+# Everything in here is generated from credentials, so nothing is committed
+# unless it is explicitly allowed below. Deny-by-default: a file added later
+# lands on the ignored side on its own, which is what you want in a dotfiles
+# repo that gets pushed.
+#
+# Kept out on purpose:
+#   config.json          every proxy password, uuid and the VPN login
+#   subscription.url     the subscription token
+#   subscription.json    the downloaded node list, passwords included
+#   vpn/device/          CyberGhost device identity: private key, certificate,
+#                        and the username/password that match its CN
+#
+# Safe to publish: generate.py rebuilds all of the above from those inputs,
+# and countries.txt is just a list of ISO codes.
+
+*
+!.gitignore
+!generate.py
+!vpn/
+vpn/*
+!vpn/countries.txt

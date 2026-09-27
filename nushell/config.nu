@@ -62,3 +62,4 @@ $env.PROMPT_COMMAND_RIGHT = {||
 }
 
 source ~/.zoxide.nu
+source ~/.config/nushell/sing-box.nu

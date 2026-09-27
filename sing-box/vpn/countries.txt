@@ -1,0 +1,112 @@
+# CyberGhost countries. Uncomment a line to switch that country on.
+#
+# The certificate in device/ authenticates your CyberGhost device; the country
+# comes from the server name alone (97-1-<code>.cg-dialup.net), so no download
+# and no extra device slot is needed for any of these.
+#
+# Keep the active list short. sing-box opens every listed country's tunnel at
+# startup, not on demand - measured: 8 active gave Algeria 269 ms, 100 active
+# pushed Japan to 3364 ms and used 111 MB. A dozen or so is a sensible ceiling.
+#
+# All 100 codes below were verified against CyberGhost DNS.
+
+al = Albania
+dz = Algeria
+ad = Andorra
+ar = Argentina
+# am = Armenia
+# au = Australia
+at = Austria
+# bs = Bahamas
+# bd = Bangladesh
+# by = Belarus
+# be = Belgium
+# bo = Bolivia
+# ba = Bosnia and Herzegovina
+# br = Brazil
+# bg = Bulgaria
+# kh = Cambodia
+ca = Canada
+# cl = Chile
+# cn = China
+# co = Colombia
+# cr = Costa Rica
+# hr = Croatia
+# cy = Cyprus
+# cz = Czechia
+# dk = Denmark
+# do = Dominican Republic
+# ec = Ecuador
+# eg = Egypt
+# ee = Estonia
+# fi = Finland
+fr = France
+# ge = Georgia
+de = Germany
+# gr = Greece
+# gl = Greenland
+# gt = Guatemala
+# hk = Hong Kong
+# hu = Hungary
+# is = Iceland
+# in = India
+# id = Indonesia
+# ir = Iran
+# ie = Ireland
+# im = Isle of Man
+# il = Israel
+# it = Italy
+jp = Japan
+# kz = Kazakhstan
+# ke = Kenya
+# la = Laos
+# lv = Latvia
+# li = Liechtenstein
+# lt = Lithuania
+# lu = Luxembourg
+# mo = Macao
+# my = Malaysia
+# mt = Malta
+# mx = Mexico
+# md = Moldova
+# mc = Monaco
+# mn = Mongolia
+# me = Montenegro
+# ma = Morocco
+# mm = Myanmar
+# np = Nepal
+nl = Netherlands
+# nz = New Zealand
+# ng = Nigeria
+# mk = North Macedonia
+# no = Norway
+# pk = Pakistan
+# pa = Panama
+pe = Peru
+# ph = Philippines
+# pl = Poland
+# pt = Portugal
+# qa = Qatar
+# ro = Romania
+# ru = Russia
+# sa = Saudi Arabia
+# rs = Serbia
+sg = Singapore
+# sk = Slovakia
+# si = Slovenia
+# za = South Africa
+# kr = South Korea
+# es = Spain
+# lk = Sri Lanka
+# se = Sweden
+ch = Switzerland
+# tw = Taiwan
+# th = Thailand
+# tr = Turkey
+# ua = Ukraine
+ae = United Arab Emirates
+gb = United Kingdom
+us = United States
+# uy = Uruguay
+# ve = Venezuela
+# vn = Vietnam

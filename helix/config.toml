@@ -10,7 +10,6 @@ true-color = true
 undercurl = true
 rulers = [100]
 end-of-line-diagnostics = "hint"
-clipboard-provider = "x-clip"
 
 [editor.inline-diagnostics]
 cursor-line = "warning"
@@ -58,6 +57,11 @@ C-e = [
   ':open %sh{cat /tmp/unique-file}',
   ':redraw',
 ]
+y = "yank_joined_to_clipboard"
+
+[keys.select]
+y = "yank_joined_to_clipboard"
+
 
 [keys.insert]
 j = { j = "normal_mode" }

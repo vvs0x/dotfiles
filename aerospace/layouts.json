@@ -1,0 +1,14 @@
+{
+  "stashWorkspace": "t",
+  "layouts": {
+    "test": {
+      "workspace": "a",
+      "layout": "h_tiles",
+      "orientation": "horizontal",
+      "windows": [
+        { "bundleId": "com.anthropic.claudefordesktop", "size": "1/2" },
+        { "bundleId": "com.mitchellh.ghostty", "size": "1/2" }
+      ]
+    }
+  }
+}
