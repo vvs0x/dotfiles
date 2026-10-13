@@ -61,5 +61,10 @@ $env.PROMPT_COMMAND_RIGHT = {||
     $"(ansi $color) ($branch) ($symbol)(ansi reset)"
 }
 
+def gc [msg: string] { git commit -m $msg}
+alias gs = git status
+alias gph = git push
+alias gpl = git pull
+
 source ~/.zoxide.nu
 source ~/.config/nushell/sing-box.nu

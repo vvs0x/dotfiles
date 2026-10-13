@@ -15,11 +15,14 @@ or, since the shebang hands it to uv, just:
     ~/.config/sing-box/generate.py
 """
 
+import http.client
 import json
 import re
+import socket
 import ssl
+import time
 import sys
-import urllib.request
+import urllib.parse
 from pathlib import Path
 
 BASE = Path.home() / ".config/sing-box"
@@ -46,7 +49,13 @@ PSEUDO_NODE_MARKERS = (
 GROUP_TYPES = {"selector", "urltest", "direct", "block", "dns"}
 
 CLASH_API_PORT = 9090
-TUN_ADDRESS = ["172.19.0.1/30"]
+# The v6 address is what makes auto_route lay down v6 routes as well. Without
+# it the tunnel only captures v4: this network hands out real IPv6, so every
+# AAAA-capable site was reached over en0 - past the proxy, past the VPN - and
+# the resolvers in /etc/resolv.conf are v6 too, so hijack-dns never saw them.
+# dns.strategy stays ipv4_only, which keeps actual traffic off v6 and on the
+# path the nodes can carry.
+TUN_ADDRESS = ["172.19.0.1/30", "fdfe:dcba:9876::1/126"]
 # The country picker.
 VPN_GROUP = "VPN"
 # Marks the copies dialled through whatever the VPN group currently points at.
@@ -58,7 +67,61 @@ CHAIN_GROUP = "vpn ⇢ auto"
 # role, not for one of the things it can point at.
 EXIT_GROUP = "EXIT"
 USER_AGENT = "sing-box/1.14.1"
+# An IP literal, so resolving it needs no DNS of its own.
+DOH_RESOLVER = "1.1.1.1"
 DASHBOARD_URL = "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+
+
+def resolve_over_doh(host):
+    """Resolve a hostname without going through the OS resolver.
+
+    ISPs enforcing the Swiss blocklist answer for the provider's domains with
+    their own sinkhole (194.230.1.12/.13), so getaddrinfo hands back a block
+    page and the download hangs until it times out.
+    """
+    context = ssl.create_default_context()
+    conn = http.client.HTTPSConnection(DOH_RESOLVER, 443, timeout=15, context=context)
+    try:
+        query = urllib.parse.urlencode({"name": host, "type": "A"})
+        conn.request("GET", f"/dns-query?{query}",
+                     headers={"Accept": "application/dns-json"})
+        answer = json.loads(conn.getresponse().read())
+    finally:
+        conn.close()
+    # type 1 is A; CNAMEs in the chain come back as separate records.
+    addresses = [a["data"] for a in answer.get("Answer", ()) if a.get("type") == 1]
+    if not addresses:
+        raise OSError(f"no A record for {host}")
+    return addresses
+
+
+def get_over_doh(url):
+    """GET a URL, resolving its host over DoH and keeping SNI on the real name."""
+    parts = urllib.parse.urlsplit(url)
+    port = parts.port or 443
+    path = urllib.parse.urlunsplit(("", "", parts.path or "/", parts.query, ""))
+    context = ssl.create_default_context()
+
+    failure = None
+    for address in resolve_over_doh(parts.hostname):
+        conn = http.client.HTTPSConnection(parts.hostname, port, timeout=30, context=context)
+        try:
+            # The socket is dialled by address while the handshake and the Host
+            # header keep the hostname, so SNI and vhost routing still work.
+            sock = socket.create_connection((address, port), timeout=30)
+            conn.sock = context.wrap_socket(sock, server_hostname=parts.hostname)
+            conn.request("GET", path, headers={"User-Agent": USER_AGENT,
+                                               "Host": parts.hostname})
+            response = conn.getresponse()
+            body = response.read()
+            if response.status != 200:
+                raise OSError(f"HTTP {response.status} {response.reason}")
+            return body.decode("utf-8")
+        except Exception as exc:  # try the next address this name resolves to
+            failure = exc
+        finally:
+            conn.close()
+    raise failure
 
 
 def fetch_subscription(refresh=True):
@@ -66,9 +129,7 @@ def fetch_subscription(refresh=True):
     if refresh and SUBSCRIPTION_URL_FILE.exists():
         url = SUBSCRIPTION_URL_FILE.read_text().strip()
         try:
-            request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(request, timeout=30, context=ssl.create_default_context()) as response:
-                raw = response.read().decode("utf-8")
+            raw = get_over_doh(url)
             json.loads(raw)  # reject anything that is not the sing-box format
             SUBSCRIPTION_CACHE.write_text(raw)
             SUBSCRIPTION_CACHE.chmod(0o600)
@@ -76,7 +137,10 @@ def fetch_subscription(refresh=True):
         except Exception as exc:
             if not SUBSCRIPTION_CACHE.exists():
                 raise SystemExit(f"Subscription download failed and no cache exists: {exc}")
-            print(f"  subscription   : download failed ({type(exc).__name__}), using cache")
+            age = SUBSCRIPTION_CACHE.stat().st_mtime
+            days = (time.time() - age) / 86400
+            print(f"  subscription   : download failed ({type(exc).__name__}: {exc}), "
+                  f"using cache from {days:.0f} days ago")
 
     if not SUBSCRIPTION_CACHE.exists():
         raise SystemExit(f"No subscription. Put its URL into {SUBSCRIPTION_URL_FILE}")
@@ -194,16 +258,17 @@ def chain_via_vpn(nodes):
     """Copy every node so it is dialled *through* the selected VPN country.
 
     detour points at the VPN group rather than one endpoint, so the chain
-    follows whatever is picked there. The resolver is pinned to dns-direct:
+    follows whatever is picked there. The resolver is pinned to dns-bootstrap:
     the node hostname must be looked up outside the tunnel, otherwise the
-    lookup itself has to traverse the chain it is trying to build.
+    lookup itself has to traverse the chain it is trying to build - and it
+    must bypass the OS resolver, which sinkholes these domains on some ISPs.
     """
     chained = []
     for node in nodes:
         copy = dict(node)
         copy["tag"] = CHAIN_PREFIX + node["tag"]
         copy["detour"] = VPN_GROUP
-        copy["domain_resolver"] = "dns-direct"
+        copy["domain_resolver"] = "dns-bootstrap"
         chained.append(copy)
     return chained
 
@@ -273,11 +338,26 @@ def build_config(nodes, vpn_endpoints):
             "servers": [
                 # Follows the selector, so DNS never leaks past the chosen exit.
                 {"type": "https", "tag": "dns-proxy", "server": "1.1.1.1", "detour": EXIT_GROUP},
-                # Resolves the proxy/VPN hostnames themselves via the OS resolver,
-                # which sing-box reaches outside its own tunnel.
+                # Resolves the proxy/VPN hostnames themselves, outside the tunnel.
+                # Must NOT be the OS resolver: ISPs on the Swiss blocklist answer
+                # for these domains with their own sinkhole (194.230.1.12/.13),
+                # so every node then dials the block page and times out.
+                {"type": "https", "tag": "dns-bootstrap", "server": "1.1.1.1"},
+                # Only for clash_mode=direct, which has to behave exactly like
+                # having no tunnel at all: the OS resolver, asked in the clear.
+                # {"type": "dhcp"} would be the cleaner answer but is broken on
+                # macOS - it fails with "no such network interface" on "auto" and
+                # times out on an explicit one, even as root. Note this rules out
+                # pointing the system DNS at the tunnel: local would then read
+                # that setting back and sing-box would query itself in a loop.
                 {"type": "local", "tag": "dns-direct"},
             ],
-            "rules": [{"clash_mode": "direct", "server": "dns-direct"}],
+            # prefer_ipv4 lifts the global ipv4_only for direct mode only, so v6
+            # works there - route rule 3 sends it straight out, ahead of the
+            # reject. Everything else keeps v4-only answers, which is what stops
+            # v6 traffic from existing while the proxy is on.
+            "rules": [{"clash_mode": "direct", "action": "route",
+                       "server": "dns-direct", "strategy": "prefer_ipv4"}],
             "final": "dns-proxy",
             "strategy": "ipv4_only",
         },
@@ -299,12 +379,19 @@ def build_config(nodes, vpn_endpoints):
                 # LAN stays reachable in every mode - router, printers, NAS.
                 {"ip_is_private": True, "outbound": "direct"},
                 {"clash_mode": "direct", "outbound": "direct"},
+                # Every node speaks v4 only, so a v6 destination dead-ends in
+                # the outbound ("missing IP") and the client just stalls.
+                # Refusing it sends the client straight back to v4 via Happy
+                # Eyeballs, and nothing escapes the tunnel - which is the point
+                # of routing v6 into it in the first place. Placed after the
+                # direct rules so v6 still works with the proxy switched off.
+                {"ip_version": 6, "action": "reject"},
                 {"clash_mode": "global", "outbound": EXIT_GROUP},
             ],
             "final": EXIT_GROUP,
             "auto_detect_interface": True,
             # 1.14 wants an explicit resolver for outbounds addressed by domain.
-            "default_domain_resolver": {"server": "dns-direct"},
+            "default_domain_resolver": {"server": "dns-bootstrap"},
         },
     }
 

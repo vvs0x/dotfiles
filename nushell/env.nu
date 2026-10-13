@@ -19,3 +19,7 @@
 
 zoxide init nushell | save -f ~/.zoxide.nu
 $env.PATH = ($env.PATH | prepend "/Library/TeX/texbin")
+
+def --wrapped ssh [...args] {
+    with-env { TERM: "xterm-256color" } { ^ssh ...$args }
+}
