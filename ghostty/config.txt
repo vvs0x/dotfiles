@@ -1,29 +1,36 @@
 font-family = "Zed Mono Bold"
 font-size = 15
-palette = 0=#51576d
-palette = 1=#e78284
-palette = 2=#a6d189
-palette = 3=#e5c890
-palette = 4=#8caaee
-palette = 5=#f4b8e4
-palette = 6=#81c8be
-palette = 7=#a5adce
-palette = 8=#626880
-palette = 9=#e78284
-palette = 10=#a6d189
-palette = 11=#e5c890
-palette = 12=#8caaee
-palette = 13=#f4b8e4
-palette = 14=#81c8be
-palette = 15=#b5bfe2
-background = 303446
-foreground = c6d0f5
+
+# Transparency
+background-opacity = 0.75
+background-blur = true
+
+# Monochrome palette
+palette = 0=#1a1a1a
+palette = 1=#a8a8a8
+palette = 2=#a8a8a8
+palette = 3=#a8a8a8
+palette = 4=#a8a8a8
+palette = 5=#a8a8a8
+palette = 6=#a8a8a8
+palette = 7=#c8c8c8
+palette = 8=#6a6a6a
+palette = 9=#d8d8d8
+palette = 10=#d8d8d8
+palette = 11=#d8d8d8
+palette = 12=#d8d8d8
+palette = 13=#d8d8d8
+palette = 14=#d8d8d8
+palette = 15=#ffffff
+background = 000000
+foreground = e0e0e0
 cursor-style = block_hollow
-cursor-color = f2d5cf
-cursor-text = 232634
-selection-background = 44495d
-selection-foreground = c6d0f5
-split-divider-color = 414559
+cursor-color = e0e0e0
+cursor-text = 000000
+selection-background = 3a3a3a
+selection-foreground = ffffff
+split-divider-color = 333333
+
 title = " "
 window-padding-x = 20
 window-padding-y = 20
@@ -32,7 +39,7 @@ shell-integration = none
 clipboard-read = allow
 clipboard-write = allow
 shell-integration-features = ssh-env,ssh-terminfo
-keybind = cmd+h=goto_split:left
-keybind = cmd+j=goto_split:down
-keybind = cmd+k=goto_split:up
-keybind = cmd+l=goto_split:right
+keybind = opt+h=goto_split:left
+keybind = opt+j=goto_split:down
+keybind = opt+k=goto_split:up
+keybind = opt+l=goto_split:right

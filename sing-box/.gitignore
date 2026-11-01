@@ -9,6 +9,7 @@
 #   subscription.json    the downloaded node list, passwords included
 #   vpn/device/          CyberGhost device identity: private key, certificate,
 #                        and the username/password that match its CN
+#   tailscale.key        auth key that registers this Mac in the tailnet
 #
 # Safe to publish: generate.py rebuilds all of the above from those inputs,
 # and countries.txt is just a list of ISO codes.

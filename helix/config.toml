@@ -1,14 +1,14 @@
 # ~/.config/helix/config.toml
-theme = "catppuccin_frappe"
+theme = "skin"
 
 [editor]
 line-number = "relative"
-cursorline = true
+cursorline = false
 bufferline = "multiple"
 color-modes = true
 true-color = true
-undercurl = true
 rulers = [100]
+undercurl = true
 end-of-line-diagnostics = "hint"
 
 [editor.inline-diagnostics]

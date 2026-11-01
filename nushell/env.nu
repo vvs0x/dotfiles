@@ -23,3 +23,8 @@ $env.PATH = ($env.PATH | prepend "/Library/TeX/texbin")
 def --wrapped ssh [...args] {
     with-env { TERM: "xterm-256color" } { ^ssh ...$args }
 }
+
+let cargo_home = $env.CARGO_HOME? | default ($env.HOME | path join .cargo)
+if ($cargo_home | path exists) {
+    $env.PATH = ($env.PATH | prepend ($cargo_home | path join bin))
+}

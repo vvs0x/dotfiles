@@ -1,0 +1,7 @@
+inherits = "catppuccin_frappe"
+
+"ui.background" = {}
+"ui.statusline" = { fg = "text" }
+"ui.statusline.inactive" = { fg = "overlay1" }
+"ui.bufferline" = { fg = "subtext0" }
+"ui.bufferline.background" = {}

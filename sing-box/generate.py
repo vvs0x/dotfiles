@@ -3,7 +3,8 @@
 # requires-python = ">=3.12"
 # dependencies = []
 # ///
-"""Builds the sing-box config from the subscription plus the CyberGhost profiles.
+"""Builds the sing-box config from the subscription plus the CyberGhost profiles,
+and the Tailscale tunnel home to the Mac mini.
 
 The provider serves native sing-box JSON, so its nodes are used verbatim; only
 the routing around them is ours. Re-run this to pick up subscription changes:
@@ -41,6 +42,35 @@ COUNTRIES_FILE = OVPN_DIR / "countries.txt"
 VPN_SERVER_TEMPLATE = "97-1-{code}.cg-dialup.net"
 VPN_SERVER_PORT = 443
 VPN_NETWORK = "tcp"
+
+# Tailscale home to the Mac mini (mg2), so ssh reaches it from any network.
+# Plain WireGuard could only dial the Mini's IPv6, which a v4-only hotspot
+# cannot reach; Tailscale punches through NAT over v4 and falls back to its
+# relays over HTTPS where UDP is blocked.
+#
+# The auth key only registers this machine once. After that the login lives
+# in the state directory and the key is ignored, so it may stay or go.
+HOME_AUTH_KEY_FILE = BASE / "tailscale.key"
+# Relative to the service's --directory, i.e. /opt/homebrew/var/lib/sing-box:
+# the daemon runs as root and must be able to write there.
+HOME_STATE_DIR = "tailscale"
+# Every tailnet address. The v6 range sits in fc00::/7, which ip_is_private
+# counts as LAN, so the rule for these has to come first.
+HOME_SUBNETS = ["100.64.0.0/10", "fd7a:115c:a1e0::/48"]
+# The group is the dashboard card, the endpoint the tailnet behind it.
+HOME_GROUP = "HOME"
+HOME_ENDPOINT = "tailscale"
+# MagicDNS names like mg2.tail2fd310.ts.net exist only inside the tailnet;
+# asked over DoH like everything else they come back empty. This server
+# answers them from the endpoint itself. The suffix is the tailnet's own
+# name (admin console -> DNS), so renaming the tailnet means changing it here.
+HOME_DNS = "dns-home"
+HOME_DNS_SUFFIX = "tail2fd310.ts.net"
+# macOS still has to send those names into the tunnel: its resolver list ends
+# with the router, which sits on the LAN, bypasses hijack-dns and answers
+# "no such record" faster than the rest. A per-domain resolver pins the suffix
+# to 100.100.100.100, which routes into the tun like any tailnet address.
+HOME_RESOLVER_FILE = Path("/etc/resolver") / HOME_DNS_SUFFIX
 
 # Providers ship fake "nodes" that only display quota or notices.
 PSEUDO_NODE_MARKERS = (
@@ -254,6 +284,24 @@ def build_vpn_endpoints():
     return endpoints, malformed
 
 
+def build_home_endpoint():
+    """The tailnet as one endpoint; only the HOME rule sends traffic into it.
+
+    No exit node and no accepted routes, so the tailnet never carries anything
+    but its own addresses - everything else keeps going wherever EXIT points.
+    The auth key is optional: once the state directory holds a login, the
+    endpoint comes back up without one.
+    """
+    endpoint = {
+        "type": "tailscale",
+        "tag": HOME_ENDPOINT,
+        "state_directory": HOME_STATE_DIR,
+    }
+    if HOME_AUTH_KEY_FILE.is_file():
+        endpoint["auth_key"] = HOME_AUTH_KEY_FILE.read_text().strip()
+    return endpoint
+
+
 def chain_via_vpn(nodes):
     """Copy every node so it is dialled *through* the selected VPN country.
 
@@ -273,7 +321,7 @@ def chain_via_vpn(nodes):
     return chained
 
 
-def build_config(nodes, vpn_endpoints):
+def build_config(nodes, vpn_endpoints, home_endpoint=None):
     node_tags = [n["tag"] for n in nodes]
     vpn_tags = [e["tag"] for e in vpn_endpoints]
 
@@ -316,6 +364,16 @@ def build_config(nodes, vpn_endpoints):
     groups = [selector, urltest]
     if vpn_tags:
         groups += [vpn_group, vpn_plus_auto]
+    # A one-entry selector looks pointless, but only groups get a card in the
+    # dashboard - this is what puts the tunnel on screen, and the route rule
+    # goes through it so its connections show up there as well.
+    if home_endpoint:
+        groups.append({
+            "type": "selector",
+            "tag": HOME_GROUP,
+            "outbounds": [HOME_ENDPOINT],
+            "interrupt_exist_connections": False,
+        })
 
     config = {
         "log": {
@@ -351,13 +409,23 @@ def build_config(nodes, vpn_endpoints):
                 # pointing the system DNS at the tunnel: local would then read
                 # that setting back and sing-box would query itself in a loop.
                 {"type": "local", "tag": "dns-direct"},
+                # Without accept_default_resolvers it knows only tailnet names
+                # and answers NXDOMAIN for the rest, hence the suffix rule.
+                *([{"type": "tailscale", "tag": HOME_DNS, "endpoint": HOME_ENDPOINT}]
+                  if home_endpoint else []),
             ],
-            # prefer_ipv4 lifts the global ipv4_only for direct mode only, so v6
-            # works there - route rule 3 sends it straight out, ahead of the
-            # reject. Everything else keeps v4-only answers, which is what stops
-            # v6 traffic from existing while the proxy is on.
-            "rules": [{"clash_mode": "direct", "action": "route",
-                       "server": "dns-direct", "strategy": "prefer_ipv4"}],
+            "rules": [
+                # First, so tailnet names resolve in every mode - same as the
+                # HOME route rule.
+                *([{"domain_suffix": [HOME_DNS_SUFFIX], "action": "route", "server": HOME_DNS}]
+                  if home_endpoint else []),
+                # prefer_ipv4 lifts the global ipv4_only for direct mode only, so
+                # v6 works there - route rule 3 sends it straight out, ahead of
+                # the reject. Everything else keeps v4-only answers, which is
+                # what stops v6 traffic from existing while the proxy is on.
+                {"clash_mode": "direct", "action": "route",
+                 "server": "dns-direct", "strategy": "prefer_ipv4"},
+            ],
             "final": "dns-proxy",
             "strategy": "ipv4_only",
         },
@@ -376,6 +444,9 @@ def build_config(nodes, vpn_endpoints):
             "rules": [
                 {"action": "sniff"},
                 {"protocol": "dns", "action": "hijack-dns"},
+                # Ahead of the LAN rule, which would claim the tailnet's v6
+                # range; above the clash_mode rules it holds in every mode.
+                *([{"ip_cidr": HOME_SUBNETS, "outbound": HOME_GROUP}] if home_endpoint else []),
                 # LAN stays reachable in every mode - router, printers, NAS.
                 {"ip_is_private": True, "outbound": "direct"},
                 {"clash_mode": "direct", "outbound": "direct"},
@@ -395,8 +466,9 @@ def build_config(nodes, vpn_endpoints):
         },
     }
 
-    if vpn_endpoints:
-        config["endpoints"] = vpn_endpoints
+    endpoints = vpn_endpoints + ([home_endpoint] if home_endpoint else [])
+    if endpoints:
+        config["endpoints"] = endpoints
 
     return config
 
@@ -409,7 +481,8 @@ def main():
         raise SystemExit("The subscription contained no usable nodes.")
 
     vpn_endpoints, malformed = build_vpn_endpoints()
-    config = build_config(nodes, vpn_endpoints)
+    home_endpoint = build_home_endpoint()
+    config = build_config(nodes, vpn_endpoints, home_endpoint)
 
     OUTPUT.write_text(json.dumps(config, indent=2, ensure_ascii=False) + "\n")
     OUTPUT.chmod(0o600)
@@ -420,6 +493,14 @@ def main():
           f"({', '.join(e['tag'] for e in vpn_endpoints)})")
     if malformed:
         print(f"  bad country    : {', '.join(malformed)} (expected '<iso code> = <name>')")
+    if "auth_key" in home_endpoint:
+        print(f"  home           : tailscale, registers with {HOME_AUTH_KEY_FILE.name}")
+    else:
+        print("  home           : tailscale, no auth key (fine once logged in)")
+    if not HOME_RESOLVER_FILE.is_file():
+        print(f"  home dns       : {HOME_RESOLVER_FILE} missing, so MagicDNS names won't resolve:")
+        print(f"                   sudo mkdir -p {HOME_RESOLVER_FILE.parent} && "
+              f"echo 'nameserver 100.100.100.100' | sudo tee {HOME_RESOLVER_FILE}")
     if skipped:
         print(f"  placeholders   : {len(skipped)} skipped")
 

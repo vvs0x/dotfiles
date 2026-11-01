@@ -3,3 +3,15 @@ rstudio/
 gh/
 git/
 marimo/
+
+# Credentials
+opencode/service.json
+*.key
+*.pem
+.env
+.env.*
+
+# Local state, not config
+zed/prompts/
+nushell/history.*
+__pycache__/

@@ -26,7 +26,7 @@ outer.right = [{ monitor."EV3895" = 10 }, 6]
 cmd-ctrl-alt-enter = 'exec-and-forget open -n -b com.mitchellh.ghostty'
 cmd-ctrl-alt-w = 'exec-and-forget osascript -e "tell application \"Finder\" to make new Finder window to (POSIX file \"/Users/mg\")" -e "tell application \"Finder\" to activate"'
 cmd-ctrl-alt-x = 'exec-and-forget open -b com.tencent.xinWeChat'
-cmd-ctrl-alt-v = 'exec-and-forget open -b com.microsoft.VSCode'
+cmd-ctrl-alt-v = 'exec-and-forget open -b dev.zed.Zed'
 
 # layout
 cmd-ctrl-alt-o = 'layout tiles horizontal vertical'

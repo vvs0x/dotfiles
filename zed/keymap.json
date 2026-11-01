@@ -1,0 +1,14 @@
+[
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j j": "vim::SwitchToHelixNormalMode"
+    }
+  },
+  {
+    "context": "vim_mode == helix_normal && !menu",
+    "bindings": {
+      "escape": ["action::Sequence", ["vim::HelixCollapseSelection", "editor::Cancel"]]
+    }
+  }
+]

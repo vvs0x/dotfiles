@@ -17,51 +17,74 @@
 # options using:
 #     config nu --doc | nu-highlight | less -R
 
+# config.nu
+
 $env.EDITOR = "hx"
 $env.VISUAL = "hx"
-$env.PROMPT_COMMAND = {||
-    let dir = ($env.PWD | str replace $env.HOME "~")
-    $"(ansi red_bold)($dir)(ansi reset)"
-}
-$env.PROMPT_INDICATOR = $"(ansi blue) ❯ (ansi reset)"
 $env.config.buffer_editor = "hx"
 $env.config.show_banner = false
-$env.config.color_config = {
-    shape_internalcall: white_bold
-    shape_external: white_bold
-    shape_externalarg: white_bold
-    shape_string: white_bold
-    shape_flag: white_bold
-    shape_variable: white_bold
-    shape_garbage: white_bold
-}
-$env.config.completions = {
-    case_sensitive: false   
-    quick: true             
-    partial: true           
-    algorithm: "fuzzy"      
-    sort: "smart"           
-    use_ls_colors: true     
-    external: {
-        enable: false       
-        max_results: 100
-  }
-}
 $env.config.history.file_format = "sqlite"
-$env.PROMPT_COMMAND_RIGHT = {||
-    let git_check = (do { git rev-parse --is-inside-work-tree } | complete)
-    if $git_check.exit_code != 0 {
-        return ""
+
+# Prompt
+$env.PROMPT_COMMAND = {||
+    let dir = ($env.PWD | str replace $env.HOME "~")
+    $"(ansi attr_bold)($dir)(ansi reset)"
 }
-    let branch = (do { git branch --show-current } | complete | get stdout |str trim)
-    let status = (do { git status --porcelain } | complete | get stdout | str trim)
-    let is_dirty = ($status != "")
-    let color = if $is_dirty { "yellow_bold" } else { "green_bold" }
-    let symbol = if $is_dirty { "x" } else { "✓" }
-    $"(ansi $color) ($branch) ($symbol)(ansi reset)"
+$env.PROMPT_INDICATOR = $"(ansi dark_gray) ❯ (ansi reset)"
+
+# Git status on the right: branch, ahead/behind, * when dirty
+$env.PROMPT_COMMAND_RIGHT = {||
+    let res = (do { ^git status --porcelain=v2 --branch } | complete)
+    if $res.exit_code != 0 { return "" }
+    let lines = ($res.stdout | lines)
+
+    let head = ($lines | where {|l| $l | str starts-with "# branch.head " } | str replace "# branch.head " "" | get 0? | default "")
+    let oid = ($lines | where {|l| $l | str starts-with "# branch.oid " } | str replace "# branch.oid " "" | get 0? | default "")
+    let ab = ($lines | where {|l| $l | str starts-with "# branch.ab " } | str replace "# branch.ab " "" | get 0? | default "+0 -0" | split row " ")
+    let ahead = ($ab.0 | str replace "+" "" | into int)
+    let behind = ($ab.1 | str replace "-" "" | into int)
+    let dirty = ($lines | where {|l| not ($l | str starts-with "#") } | is-not-empty)
+
+    let name = if $head == "(detached)" { $oid | str substring 0..6 } else { $head }
+    let marks = [
+        (if $ahead > 0 { $"↑($ahead)" })
+        (if $behind > 0 { $"↓($behind)" })
+        (if $dirty { "*" })
+    ] | compact
+
+    $"(ansi dark_gray)([$name ...$marks] | str join ' ')(ansi reset)"
 }
 
-def gc [msg: string] { git commit -m $msg}
+# Colours: mostly default, bold commands, dim strings and chrome
+$env.config.color_config = {
+    shape_internalcall: { attr: b }
+    shape_external: { attr: b }
+    shape_externalarg: default
+    shape_flag: default
+    shape_variable: default
+    shape_string: dark_gray
+    shape_garbage: { attr: u }
+    header: { attr: b }
+    separator: dark_gray
+    row_index: dark_gray
+    hints: dark_gray
+}
+
+$env.config.completions = {
+    case_sensitive: false
+    quick: true
+    partial: true
+    algorithm: "fuzzy"
+    sort: "smart"
+    use_ls_colors: true
+    external: {
+        enable: false
+        max_results: 100
+    }
+}
+
+# Git aliases
+def gc [msg: string] { git commit -m $msg }
 alias gs = git status
 alias gph = git push
 alias gpl = git pull
