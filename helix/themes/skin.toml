@@ -5,3 +5,15 @@ inherits = "catppuccin_frappe"
 "ui.statusline.inactive" = { fg = "overlay1" }
 "ui.bufferline" = { fg = "subtext0" }
 "ui.bufferline.background" = {}
+"ui.virtual.ruler" = { bg = "ruler" }
+
+"ui.popup" = { fg = "text", bg = "popup_bg" }
+"ui.popup.info" = { fg = "text", bg = "popup_bg" }
+"ui.help" = { fg = "text", bg = "popup_bg" }
+"ui.menu" = { fg = "text", bg = "popup_bg" }
+"ui.menu.selected" = { fg = "text", bg = "popup_sel", modifiers = ["bold"] }
+
+[palette]
+popup_bg = "#2d333f"
+popup_sel = "#434c5e"
+ruler = "#2d333f"
